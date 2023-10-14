@@ -6,52 +6,29 @@ authors = ["Sora Suegami"]
 description = "RSA verification circuit in halo2."
 license = "MIT"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
 [dependencies]
-# halo2wrong = { git = "https://github.com/privacy-scaling-explorations/halo2wrong", tag = "v2023_01_20" }
-# maingate = { git = "https://github.com/privacy-scaling-explorations/halo2wrong", tag = "v2023_01_20" }
 halo2-dynamic-sha256 = { git = "https://github.com/zkemail/halo2-dynamic-sha256.git", version = "0.1.0", branch = "main", optional = true }
 num-bigint = { version = "0.4", features = ["rand"] }
 sha2 = "0.10.6"
 rand = "0.8.5"
 rsa = { version = "0.6.1", features = ["serde"] }
-halo2-base = { version = "0.2.2", default-features = false, features = [
-    "halo2-pse",
+halo2-base = { branch = "community-edition", default-features = false, features = [
+    "halo2-axiom",
     "display",
-], git = "https://github.com/axiom-crypto/halo2-lib.git", rev = "9860acc" }
-halo2-ecc = { version = "0.2.2", default-features = false, features = [
-    "halo2-pse",
+    "test-utils",
+], git = "https://github.com/axiom-crypto/halo2-lib.git" }
+halo2-ecc = { branch = "community-edition", default-features = false, features = [
+    "halo2-axiom",
     "display",
-], git = "https://github.com/axiom-crypto/halo2-lib.git", rev = "9860acc" }
+], git = "https://github.com/axiom-crypto/halo2-lib.git" }
 num-traits = "0.2.15"
-
-[target.'cfg(target_family = "wasm")'.dependencies]
-getrandom = { version = "0.2", features = ["js"] }
-wasm-bindgen = { version = "0.2.81", features = ["serde-serialize"] }
-console_error_panic_hook = "0.1.7"
-rayon = "1.5"
-wasm-bindgen-rayon = { version = "1.0" }
-web-sys = { version = "0.3", features = [
-    "Request",
-    "Window",
-    "Response",
-    "console",
-] }
-wasm-bindgen-futures = "0.4"
-js-sys = "0.3"
-serde = { version = "1.0", features = ["derive"] }
-serde-wasm-bindgen = "0.4"
-rand = "0.8.5"
+env_logger = "0.10.0"
 
 [dev-dependencies]
 criterion = "0.4"
 
-[[bench]]
-name = "bench"
-harness = false
-
 [features]
-default = ["sha256"]
-sha256 = ["halo2-dynamic-sha256"]
+default = ["halo2-axiom", "display"]
+display = ["halo2-base/display"]
+halo2-pse = ["halo2-base/halo2-pse"]
+halo2-axiom = ["halo2-base/halo2-axiom"]
